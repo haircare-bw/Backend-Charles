@@ -2,10 +2,10 @@
 const express = require('express');
 
 //import database
-const stylist = require('../models/stylistDb.js');
+const Stylists = require('../models/stylistDb.js');
 
 //define the Router
-const router = express();
+const router = express.Router();
 
 //make a constant reply for 404 and 500
 const sendErr = (msg, res) => {
@@ -18,40 +18,86 @@ const sendMissingID = (res) => {
 //make CRUD endpoints
 //get request
 router.get('/', (req, res) => {
-    stylist
+    Stylists
     .get()
-    .then( post => {
-        res.status(200).json(post);
+    .then( stylist => {
+        res.status(200).json(stylist);
     })
     .catch( err => {
-        return sendErr( 'Post information is unavailable at this time', res );
+        return sendErr( 'stylist information is unavailable at this time', res );
     })
 });
 
-//get post by ID
+//get stylist by ID
 router.get('/:id', (req, res) => {
     const ID = req.params.id;
-    stylist
+    Stylists
     .getById(ID)
-    .then( post => {
-        if( post === undefined ) {
+    .then( stylist => {
+        if( stylist === undefined ) {
             return sendMissingID(res);
         }
         else{
-            return res.status(200).json(post);
+            return res.status(200).json(stylist);
         }
     })
     .catch( err => {
-        return sendErr( 'Post information is unavailable at this time', res );
+        return sendErr( 'stylist information is unavailable at this time', res );
     })
 });
 
-//delete post 
+//new stylist
+router.post('/', (req, res) => {
+    Stylists
+    .insert(req.body)
+    .then( stylist => {
+      console.log(stylist);
+      res.status(200).json({
+        message: 'Stylist created, congratz!!!'
+      });
+    })
+    .catch( err => {
+      //console.log(err)
+      return sendErr( 'This function is currently unavailable', res );
+    })
+})
+
+//update stylist
+router.put('/:id', (req, res) => {
+    //define id 
+    const ID = req.params.id
+  
+    //define req.body
+    const { username, password, type, about, skills } = req.body;
+    const stylist = { username, password, type, about, skills };
+  
+    //check the req body
+    if(!username || !password || !about) { 
+      return res.status(400).json({ error: 'Please provide the NEW stylist name, password, about section' });
+    }
+    Stylists
+    .update(ID, stylist)
+    .then( stylist => {
+      //console.log(stylist)
+      if (stylist === undefined) {
+        return sendMissing(res);
+      }
+      else{
+        newStylist = { ID, username, password, type, about, skills }
+        return res.status(201).json(newStylist);
+      }
+    })
+    .catch( err => {
+      return sendError( 'This function is currently unavailable', res );
+    })
+})
+
+//delete stylist 
 router.delete('/:id', (req, res) => {
     //set id
     const ID = req.params.id
     //delete the post
-    stylist
+    Stylists
     .remove(ID)
     .then( post => { 
       if (post === undefined) {
@@ -65,64 +111,6 @@ router.delete('/:id', (req, res) => {
       return sendError( 'This function is currently unavailable', res );
     })
 })
-
-//update post
-router.put('/:id', (req, res) => {
-    //define id 
-    const ID = req.params.id
-  
-    //define req.body
-    const { text, user_id } = req.body;
-    const posted = { text, user_id };
-  
-    //check the req body
-    if(!text || !user_id) { 
-      return res.status(400).json({ error: 'Please provide the NEW post text' });
-    }
-    stylist
-    .update(ID, posted)
-    .then( post => {
-      console.log(post)
-      if (post === 0) {
-        return sendMissingID(res);
-      }
-      else{
-        newPost = { ID, text, user_id }
-        return res.status(201).json(newPost);
-      }
-    })
-    .catch( err => {
-      return sendError( 'This function is currently unavailable', res );
-    })
-})
-
-//new post
-router.post('/', (req, res) => {
-    //define req.body
-    const { text, user_id } = req.body;
-    const posted = { text, user_id };
-  
-    //check the req body
-    if(!text || !user_id) { 
-      return res.status(400).json({ error: 'Please provide the NEW post text' });
-    }
-    stylist
-    .insert(posted)
-    .then( post => {
-      res.status(200).json(post);
-    })
-    .catch( err => {
-      console.log(err)
-      return sendError( 'This function is currently unavailable', res );
-    })
-})
-
-// custom middleware
-
-// function validatePostId(req, res, next) {
-
-// };
-
 
 //export
 module.exports = router;

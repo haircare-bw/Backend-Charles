@@ -6,10 +6,16 @@ module.exports = {
   insert,
   update,
   remove,
+  findBy,
 };
 
 function get() {
-  return db('users');
+  return db('users').select('id', 'username', 'password');
+}
+
+function findBy(filter) {
+  return db('users')
+  .where(filter);
 }
 
 function getById(id) {

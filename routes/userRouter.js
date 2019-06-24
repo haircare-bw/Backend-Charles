@@ -3,13 +3,12 @@ const express = require('express');
 
 //import database
 const Users = require('../models/userDb.js');
-// const Posts = require('../data/Helpers/postDb');
-
+const restricted = require('../middleware/restricted.js');
 //define the Router
 const router = express.Router();
 
 //make a constant reply for 404 & 500
-const sendError = (msg, res) => {
+const sendErr = (msg, res) => {
     res.status(500).json({ errorMessage: `${msg}` })
 };
 
@@ -19,26 +18,24 @@ const sendMissing = (res) => {
 
 //////////////////////////////////////////////////////////MAKE CRUD ENDPOINTS///////////////////////////////////
 //get requests all users
-    router.get('/', (req, res) => {
-        Users
+    router.get('/', restricted, (req, res) => {
+    Users
         .get()
         .then( user => {
-        res.status(200).json(user);
+            res.json(user);
         })
-        .catch( err => {
-        return sendError( 'User information Unavailable at this moment', res );
-        })
-    }
-);
+        .catch( err => res.send(err));
+    });
+
 
 //get user by id 
-    router.get('/:id', /* validateUserId,*/ (req, res) => {
+    router.get('/:id', (req, res) => {
         res.status(200).json(req.user)  
     }
 );
 
 //NEW USER using post
-router.post('/',/* validateUser,*/ (req, res) => {
+router.post('/', (req, res) => {
     Users.insert(req.body)
         .then(user => {
             //console.log(user);
@@ -46,8 +43,8 @@ router.post('/',/* validateUser,*/ (req, res) => {
                 message: 'User created, congratz!!!'
             });
         })
-        .catch(error => {
-            //console.log(error);
+        .catch(err => {
+            //console.log(err);
             res.status(500).json({
                 message: 'Error creating the user within the post command.'
             });
@@ -56,7 +53,7 @@ router.post('/',/* validateUser,*/ (req, res) => {
 );
 
 //update user
-    router.put('/:id',/* validateUserId, validateUser,*/ (req, res) => {
+    router.put('/:id', (req, res) => {
         //define id 
         const ID = req.params.id
     
