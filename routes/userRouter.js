@@ -32,13 +32,13 @@ const sendMissing = (res) => {
 );
 
 //get user by id 
-    router.get('/:id', validateUserId, (req, res) => {
+    router.get('/:id', /* validateUserId,*/ (req, res) => {
         res.status(200).json(req.user)  
     }
 );
 
 //NEW USER using post
-router.post('/', validateUser, (req, res) => {
+router.post('/',/* validateUser,*/ (req, res) => {
     Users.insert(req.body)
         .then(user => {
             //console.log(user);
@@ -56,13 +56,13 @@ router.post('/', validateUser, (req, res) => {
 );
 
 //update user
-    router.put('/:id', validateUserId, validateUser, (req, res) => {
+    router.put('/:id',/* validateUserId, validateUser,*/ (req, res) => {
         //define id 
         const ID = req.params.id
     
         //define req.body
-        const { username, password } = req.body;
-        const user = { username, password };
+        const { username, password, type } = req.body;
+        const user = { username, password, type };
     
         //check the req body
         if(!username || !password ) { 
@@ -75,7 +75,7 @@ router.post('/', validateUser, (req, res) => {
             return sendMissing(res);
         }
         else{
-            newUser = { ID, username, password }
+            newUser = { ID, username, password, type }
             return res.status(201).json(newUser);
         }
         })
@@ -106,42 +106,5 @@ router.post('/', validateUser, (req, res) => {
 
     }
 );
-
-
-
-//////////////////////////////////////////CUSTOM MIDDLEWARE//////////////////////////////////////////////
-//////////////////////////////////////////ValidateUserId/////////////////////////////////////////////////
-function validateUserId(req, res, next) {
-    const ID = req.params.id
-       Users
-       .getById(ID)
-       .then( user => {
-        if (user) {
-            req.user = user
-            next()
-        } else {
-            res.status(400).json({ message: 'invalid user id' })
-        }
-       })
-       .catch(err => {
-           res.status(500).json({err})
-       }) 
-};
-//////////////////////////////////////////ValidateUser/////////////////////////////////////////////////
-function validateUser(req, res, next) {
-        if (req.body) {
-            if (req.body.username) {
-                next();
-            }
-            else {
-                res.status(400).json({
-                    message: 'Missing required name field.'
-                });
-            }
-        }
-        else {
-            res.status(400).json({message: 'Missing user data.'});
-        }
-};
 
 module.exports = router;

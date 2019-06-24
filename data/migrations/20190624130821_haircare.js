@@ -17,7 +17,7 @@ exports.up = function(knex) {
       .createTable('stylists', function(stylists) {
         stylists.increments();
         stylists
-            .string('name', 128)
+            .string('username', 128)
             .notNullable()
             .unique();
         stylists
