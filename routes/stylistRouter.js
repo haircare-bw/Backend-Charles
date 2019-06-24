@@ -3,6 +3,7 @@ const express = require('express');
 
 //import database
 const Stylists = require('../models/stylistDb.js');
+const restricted = require('../middleware/restricted.js');
 
 //define the Router
 const router = express.Router();
@@ -17,7 +18,7 @@ const sendMissingID = (res) => {
 
 //make CRUD endpoints
 //get request
-router.get('/', (req, res) => {
+router.get('/', restricted, (req, res) => {
     Stylists
     .get()
     .then( stylist => {

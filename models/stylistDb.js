@@ -12,6 +12,11 @@ function get() {
   return db('stylists');
 }
 
+function findBy(filter) {
+  return db('stylists')
+  .where(filter);
+}
+
 function getById(id) {
   return db('stylists')
     .where({ id })
