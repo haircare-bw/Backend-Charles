@@ -37,26 +37,6 @@ const sendMissing = (res) => {
     }
 );
 
-//get users post data
-    router.get('/:id/posts', validateUserId, (req, res) => {
-        //define id
-        const ID = req.params.id 
-        Users
-            .getUserPosts(ID)
-            .then( user => {
-                if (user.length == 0) {
-                    return sendMissing(res);
-                }
-                else{
-                    return res.status(200).json(user);
-                }
-            }) 
-            .catch( err => {
-                return sendError( 'User information is Unavailable at this time', res );
-            })
-    }
-);
-
 //NEW USER using post
 router.post('/', validateUser, (req, res) => {
     Users.insert(req.body)
@@ -75,36 +55,18 @@ router.post('/', validateUser, (req, res) => {
     }
 );
 
-//adding a post to user
-router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
-    req.body.user_id = req.user.id;
-    console.log(req.body.user_id);
-    Posts.insert(req.body)
-        .then(post => {
-            console.log(post);
-            res.status(200).json({
-                message: 'Post created.'
-            })
-        })
-        .catch(error => {
-            res.status(500).json({
-                message: 'Database error. Post was not created.'
-            })
-        })
-});
-
 //update user
     router.put('/:id', validateUserId, validateUser, (req, res) => {
         //define id 
         const ID = req.params.id
     
         //define req.body
-        const { name } = req.body;
-        const user = { name };
+        const { username, password } = req.body;
+        const user = { username, password };
     
         //check the req body
-        if(!name) { 
-        return res.status(400).json({ error: 'Please provide the NEW user name' });
+        if(!username || !password ) { 
+        return res.status(400).json({ error: 'Please provide the NEW user name or password' });
         }
         Users
         .update(ID, user)
@@ -113,7 +75,7 @@ router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
             return sendMissing(res);
         }
         else{
-            newUser = { ID, name }
+            newUser = { ID, username, password }
             return res.status(201).json(newUser);
         }
         })
@@ -168,7 +130,7 @@ function validateUserId(req, res, next) {
 //////////////////////////////////////////ValidateUser/////////////////////////////////////////////////
 function validateUser(req, res, next) {
         if (req.body) {
-            if (req.body.name) {
+            if (req.body.username) {
                 next();
             }
             else {
@@ -181,24 +143,5 @@ function validateUser(req, res, next) {
             res.status(400).json({message: 'Missing user data.'});
         }
 };
-//////////////////////////////////////////ValidatePost/////////////////////////////////////////////////
-function validatePost(req, res, next) {
-        if (req.body) {
-            if (req.body.text) {
-                next();
-            }
-            else {
-                res.status(400).json({
-                    message: 'Missing required text field in req.body'
-                });
-            }
-         }
-        else {
-            res.status(400).json({
-                message: 'Missing post data in req.body'
-            });
-         }
-};
-
 
 module.exports = router;
