@@ -4,7 +4,7 @@ exports.up = function(knex) {
       .createTable('users', function(users) {
         users.increments();
         users
-            .string('username')
+            .string('username', 128)
             .notNullable()
             .unique();
         users
@@ -29,7 +29,7 @@ exports.up = function(knex) {
             .string('password', 128)
             .notNullable();
         stylists
-            .string('type', 128)
+            .string('type', 128);
       });
   };
   
