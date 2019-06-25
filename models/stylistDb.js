@@ -6,6 +6,7 @@ module.exports = {
   insert,
   update,
   remove,
+  findBy,
 };
 
 function get() {
