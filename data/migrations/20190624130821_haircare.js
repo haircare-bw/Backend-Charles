@@ -24,7 +24,7 @@ exports.up = function(knex) {
             .string('about', 256)
             .notNullable();
         stylists
-            .string('skills', 128);
+            .string('skills', 256);
         stylists
             .string('password', 128)
             .notNullable();
