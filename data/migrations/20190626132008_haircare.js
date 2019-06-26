@@ -32,9 +32,8 @@ exports.up = function(knex) {
         stylists
             .string('skills', 256);
         stylists
-            .blob('profile_img')
+            .string('profile_img', 255)
             .defaultTo('https://source.unsplash.com/200x200/?hair')
-            .notNullable();
     })
         
     .createTable('posts', function(posts) {
@@ -52,9 +51,8 @@ exports.up = function(knex) {
             .string('title', 255)
             .notNullable()
         posts
-            .string('posts_image', 256)
+            .string('posts_image', 255)
             .defaultTo('https://source.unsplash.com/400x400/?hair')
-            .notNullable();
         posts
             .string('description', 255);
     })
@@ -70,9 +68,8 @@ exports.up = function(knex) {
             .onDelete('CASCADE')
             .onUpdate('CASCADE');
         portfolio
-            .string('portfolio_image', 256)
+            .string('portfolio_image', 255)
             .defaultTo('https://source.unsplash.com/400x400/?hair')
-            .notNullable();
     });
 };
   
