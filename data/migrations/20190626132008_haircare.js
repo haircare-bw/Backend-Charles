@@ -2,7 +2,8 @@
 exports.up = function(knex) {
     return knex.schema   
     .createTable('users', function(users) {
-        users.increments();
+        users
+        .increments();
         users
             .string('email', 128)
             .notNullable()
@@ -17,6 +18,7 @@ exports.up = function(knex) {
     .createTable('stylists', function(stylists) {
         stylists
             .integer('user_id')
+            .unique()
             .unsigned()
             .notNullable()
             .references('id')
