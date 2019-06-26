@@ -46,15 +46,17 @@ exports.up = function(knex) {
         posts
         .integer('stylistsId')
         .unsigned()
+        .notNullable();
+        posts
+        .foreign('stylistsId')
         .references('id')
         .inTable('stylists')
         .onDelete('CASCADE')
-        .onUpdate('CASCADE')
-        .notNullable();
+        .onUpdate('CASCADE');
 
       });
   };
   
   exports.down = function(knex) {
-    return knex.schema.dropTableIfExists('stylists').dropTableIfExists('users').dropTableIfExists('posts')
+    return knex.schema.dropTableIfExists('posts').dropTableIfExists('stylists').dropTableIfExists('users')
   };

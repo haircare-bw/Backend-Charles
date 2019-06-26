@@ -1,3 +1,4 @@
+require('dotenv').config();
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -27,9 +28,11 @@ router.post('/login', (req, res) => {
   Users.findBy({ username })//uses findby from users-model
     .first()
     .then(user => {
+      // console.log('this is from login', user);
       if (user && bcrypt.compareSync(password, user.password)) {
         //generate a token
         const token = genToken(user);
+        // console.log('this is the token', token);
 
         res.status(200).json({
           message: `Welcome ${user.username}!`,
