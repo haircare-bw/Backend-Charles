@@ -43,7 +43,7 @@ exports.up = function(knex) {
             .integer('user_id')
             .unsigned()
             .notNullable()
-            .references('id')
+            .references('user_id')
             .inTable('stylists')
             .onDelete('CASCADE')
             .onUpdate('CASCADE');
@@ -63,7 +63,7 @@ exports.up = function(knex) {
             .integer('user_id')
             .unsigned()
             .notNullable()
-            .references('id')
+            .references('user_id')
             .inTable('stylists')
             .onDelete('CASCADE')
             .onUpdate('CASCADE');
