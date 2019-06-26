@@ -18,9 +18,7 @@ exports.up = function(knex) {
         users
             .integer('type')
             .unsigned()
-            .notNullable();
-        users
-            .foreign('typeId')
+            .notNullable()
             .references('id')
             .inTable('type')
             .onDelete('CASCADE')
@@ -31,9 +29,7 @@ exports.up = function(knex) {
         stylists
             .integer('user_id')
             .unsigned()
-            .notNullable();
-        stylists
-            .foreign('usersId')
+            .notNullable()
             .references('id')
             .inTable('users')
             .onUpdate('CASCADE')
@@ -58,9 +54,7 @@ exports.up = function(knex) {
         posts
             .integer('user_id')
             .unsigned()
-            .notNullable();
-        posts
-            .foreign('stylistsId')
+            .notNullable()
             .references('id')
             .inTable('stylists')
             .onDelete('CASCADE')
@@ -81,9 +75,7 @@ exports.up = function(knex) {
         portfolio
             .integer('user_id')
             .unsigned()
-            .notNullable();
-        portfolio
-            .foreign('stylistsId')
+            .notNullable()
             .references('id')
             .inTable('stylists')
             .onDelete('CASCADE')

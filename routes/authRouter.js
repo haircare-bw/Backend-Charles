@@ -23,9 +23,9 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  let { username, password } = req.body;
+  let { email, password } = req.body;
 
-  Users.findBy({ username })//uses findby from users-model
+  Users.findBy({ email })//uses findby from users-model
     .first()
     .then(user => {
       // console.log('this is from login', user);
@@ -35,7 +35,7 @@ router.post('/login', (req, res) => {
         // console.log('this is the token', token);
 
         res.status(200).json({
-          message: `Welcome ${user.username}!`,
+          message: `Welcome!`,
           token, // added token
         });
       } else {
@@ -50,7 +50,7 @@ router.post('/login', (req, res) => {
 function genToken(user) {
   const payload = {
     subject: user.id,
-    username: user.username
+    username: user.email
   };
   const options ={
     expiresIn: '1d',
