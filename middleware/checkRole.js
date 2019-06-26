@@ -1,8 +1,7 @@
-module.exports = role => {
-    return (req, res, next) => {
+module.exports  = (req, res, next) => {
         if(req.user){
             if(
-                req.user.roles && Array.isArray(req.user.roles) && req.user.roles.includes(role)
+                req.user.type && Array.isArray(req.user.type) && req.user.type.includes(stylist)
             ) {
                 next();
             } else {
@@ -12,4 +11,4 @@ module.exports = role => {
             res.status(401).json({ message: 'you do not the Creds for this'});
         }
     };
-};
+
