@@ -49,7 +49,7 @@ router.get('/:id', restricted, (req, res) => {
 );
 
 //NEW USER using post
-router.post('/', restricted, (req, res) => {
+router.post('/', restricted, checked, (req, res) => {
     Users.insert(req.body)
         .then(user => {
             //console.log(user);
@@ -67,7 +67,7 @@ router.post('/', restricted, (req, res) => {
 );
 
 //update user
-router.put('/:id', restricted, (req, res) => {
+router.put('/:id', restricted, checked, (req, res) => {
         //define id 
         const ID = req.params.id
     
@@ -97,7 +97,7 @@ router.put('/:id', restricted, (req, res) => {
 );
 
 //delete User
-router.delete('/:id', restricted, (req, res) => {
+router.delete('/:id', restricted, checked, (req, res) => {
         //set id
         const ID = req.params.id
         //delete the user
