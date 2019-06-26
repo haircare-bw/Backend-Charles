@@ -1,11 +1,6 @@
 
 exports.up = function(knex) {
-    return knex.schema
-    .createTable('type', function(type){
-        type.increments();
-        type.string('description', 255);
-    })    
-
+    return knex.schema   
     .createTable('users', function(users) {
         users.increments();
         users
@@ -16,13 +11,7 @@ exports.up = function(knex) {
             .string('password', 128)
             .notNullable();
         users
-            .integer('type')
-            .unsigned()
-            .notNullable()
-            .references('id')
-            .inTable('type')
-            .onDelete('CASCADE')
-            .onUpdate('CASCADE');
+        .boolean('stylist');
     })
 
     .createTable('stylists', function(stylists) {
@@ -63,7 +52,7 @@ exports.up = function(knex) {
             .string('title', 255)
             .notNullable()
         posts
-            .string('image', 256)
+            .string('posts_image', 256)
             .defaultTo('https://source.unsplash.com/400x400/?hair')
             .notNullable();
         posts
@@ -81,7 +70,7 @@ exports.up = function(knex) {
             .onDelete('CASCADE')
             .onUpdate('CASCADE');
         portfolio
-            .string('image', 256)
+            .string('portfolio_image', 256)
             .defaultTo('https://source.unsplash.com/400x400/?hair')
             .notNullable();
     });
@@ -89,7 +78,6 @@ exports.up = function(knex) {
   
   exports.down = function(knex) {
     return knex.schema
-        .dropTableIfExists('type')
         .dropTableIfExists('users')
         .dropTableIfExists('stylists')
         .dropTableIfExists('posts')

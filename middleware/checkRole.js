@@ -1,8 +1,8 @@
-module.exports = role => {
+module.exports = type => {
     return (req, res, next) => {
         if(req.user){
             if(
-                req.user.roles && Array.isArray(req.user.roles) && req.user.roles.includes(role)
+                req.user.type && Array.isArray(req.user.type) && req.user.type.includes(stylist)
             ) {
                 next();
             } else {

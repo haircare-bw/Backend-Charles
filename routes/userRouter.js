@@ -4,6 +4,7 @@ const express = require('express');
 //import database
 const Users = require('../models/userDb.js');
 const restricted = require('../middleware/restricted.js');
+const checked = require('../middleware/checkRole.js')
 //define the Router
 const router = express.Router();
 
@@ -18,24 +19,37 @@ const sendMissing = (res) => {
 
 //////////////////////////////////////////////////////////MAKE CRUD ENDPOINTS///////////////////////////////////
 //get requests all users
-    router.get('/', restricted, (req, res) => {
+router.get('/', restricted, (req, res) => {
     Users
         .get()
         .then( user => {
             res.json(user);
         })
         .catch( err => res.send(err));
-    });
+});
 
 
 //get user by id 
-    router.get('/:id', (req, res) => {
-        res.status(200).json(req.user)  
+router.get('/:id', restricted, (req, res) => {
+        const ID = req.params.id;
+        Users
+        .getById(ID)
+        .then( stylist => {
+            if( stylist === undefined ) {
+                return sendMissingID(res);
+            }
+            else{
+                return res.status(200).json(stylist);
+            }
+        })
+        .catch( err => {
+            return sendErr( 'stylist information is unavailable at this time', res );
+        }) 
     }
 );
 
 //NEW USER using post
-router.post('/', (req, res) => {
+router.post('/', restricted, (req, res) => {
     Users.insert(req.body)
         .then(user => {
             //console.log(user);
@@ -53,7 +67,7 @@ router.post('/', (req, res) => {
 );
 
 //update user
-    router.put('/:id', (req, res) => {
+router.put('/:id', restricted, (req, res) => {
         //define id 
         const ID = req.params.id
     
@@ -83,7 +97,7 @@ router.post('/', (req, res) => {
 );
 
 //delete User
-    router.delete('/:id', (req, res) => {
+router.delete('/:id', restricted, (req, res) => {
         //set id
         const ID = req.params.id
         //delete the user

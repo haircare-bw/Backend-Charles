@@ -10,7 +10,7 @@ module.exports = {
 };
 
 function get() {
-  return db.select([ 'users.id', 'username', 'about', 'skills', 'profile-img' ]);
+  return db('stylists')
 }
 
 function findBy(filter) {
@@ -18,10 +18,13 @@ function findBy(filter) {
   .where(filter);
 }
 
-function getById(id) {
-  return db('users')
-    .where({ id })
-    .first();
+function getById(user_id) {
+  return db('stylists')
+  .join('posts', 'stylists.user_id', 'posts.user_id')
+  .join('portfolio', 'stylists.user_id', 'portfolio.user_id' )
+  .select('stylists.username', 'stylists.about', 'stylists.skills', 'stylists.profile_img', 'posts.title', 'posts.posts_image', 'posts.description', 'portfolio.portfolio_image')
+  .where('stylists.user_id', user_id)
+
 }
 
 function insert(user) {
@@ -34,7 +37,7 @@ function insert(user) {
 
 function update(id, changes) {
   return db('users')
-    .where({ id })
+    .where('id', id)
     .update(changes);
 }
 

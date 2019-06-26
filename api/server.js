@@ -7,7 +7,7 @@ const morgan = require('morgan');
 //import the routers
 const auth = require('../routes/authRouter.js');
 const userRouter = require('../routes/userRouter.js');
-const stylistRouter = require('../routes/stylistRouter.js');
+// const stylistRouter = require('../routes/stylistRouter.js');
 
 //define the server and add use imports
 const server = express();
@@ -22,7 +22,7 @@ server.use(morgan('common'));
 //load the routes that were imported
 server.use('/api/auth',auth);
 server.use('/api/users', userRouter);
-server.use('/api/stylists', stylistRouter); 
+// server.use('/api/stylists', stylistRouter); 
 
 //check to see if the server is running 
 server.get('/', (req, res) => {
