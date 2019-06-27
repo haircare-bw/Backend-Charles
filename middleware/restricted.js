@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
     if(err) {
       res.status(401).json({ message: 'Invalid Credentials' });
     }else{
-     // req.user = { username: decodeToken.username }; //<===only really needed if I am going to use the decodeToken param
+    req.user = { stylist: decodeToken.stylist }; //<===only really needed if I am going to use the decodeToken param
       next();
     }
   });

@@ -161,7 +161,7 @@ router.delete('/:id', restricted, checked, (req, res) => {
             return sendMissing(res);
         }
         else{
-            return res.status(200).json({ message: 'User account removed successfully', user});
+            return res.status(200).json({ message: 'User account removed successfully'});
         }
         })
         .catch( err => {
@@ -183,7 +183,7 @@ router.delete('/:id/posts', restricted, checked, (req, res) => {
         return sendMissing(res);
     }
     else{
-        return res.status(200).json({ message: 'User account removed successfully', post});
+        return res.status(200).json({ message: 'User post removed successfully'});
     }
     })
     .catch( err => {
