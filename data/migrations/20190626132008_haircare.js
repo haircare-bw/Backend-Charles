@@ -17,9 +17,9 @@ exports.up = function(knex) {
 
     .createTable('stylists', function(stylists) {
         stylists
+        .increments();
+        stylists
             .integer('user_id')
-            .unique()
-            .unsigned()
             .notNullable()
             .references('id')
             .inTable('users')
@@ -42,10 +42,10 @@ exports.up = function(knex) {
         posts
             .increments();
         posts
-            .integer('user_id')
+            .integer('stylists_id')
             .unsigned()
             .notNullable()
-            .references('user_id')
+            .references('id')
             .inTable('stylists')
             .onDelete('CASCADE')
             .onUpdate('CASCADE');
@@ -62,10 +62,10 @@ exports.up = function(knex) {
         portfolio
             .increments();
         portfolio
-            .integer('user_id')
+            .integer('stylists_id')
             .unsigned()
             .notNullable()
-            .references('user_id')
+            .references('id')
             .inTable('stylists')
             .onDelete('CASCADE')
             .onUpdate('CASCADE');

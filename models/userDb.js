@@ -18,12 +18,12 @@ function findBy(filter) {
   .where(filter);
 }
 
-function getById(user_id) {
+function getById(id) {
   return db('stylists')
-  .join('posts', 'stylists.user_id', 'posts.user_id')
-  .join('portfolio', 'stylists.user_id', 'portfolio.user_id' )
+  .join('posts', 'stylists.id', 'posts.stylists_id')
+  .join('portfolio', 'stylists.id', 'portfolio.stylists_id' )
   .select('stylists.username', 'stylists.about', 'stylists.skills', 'stylists.profile_img', 'posts.title', 'posts.posts_image', 'posts.description', 'portfolio.portfolio_image')
-  .where('stylists.user_id', user_id)
+  .where('stylists.id', id)
 
 }
 
