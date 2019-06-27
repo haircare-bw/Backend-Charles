@@ -5,6 +5,7 @@ const express = require('express');
 const Users = require('../models/userDb.js');
 const restricted = require('../middleware/restricted.js');
 const checked = require('../middleware/checkRole.js')
+
 //define the Router
 const router = express.Router();
 
@@ -48,20 +49,36 @@ router.get('/:id', restricted, async (req, res) => {
         }
 });    
 
-//NEW USER using post
-router.post('/', restricted, checked, (req, res) => {
+//NEW Post using post
+router.post('/:id/posts', restricted, checked, (req, res) => {
+    //define id
+    const ID = req.params.id
+
+    //define req.body
+    const { title, posts_image, description } = req.body;
+    const post = { title, posts_image, description};
+
+    //check the req.body
+    if(!title && !posts_image ) { 
+        return res.status(400).json({ error: 'Please provide the NEW posts title and image.' });
+        }
     Users
-        .insert(req.body)
-        .then(user => {
-            //console.log(user);
-            res.status(200).json({
-                message: 'Post created, congratz!!!'
+        .insert(ID, post)
+        .then(post => {
+            if (post === undefined) {
+                return sendMissing(res);
+            }
+            else{
+                post = { ID, title, posts_image, description }
+                res.status(200).json({
+                message: 'Post created, congratulations!!!'
             });
+        }
         })
         .catch(err => {
             //console.log(err);
             res.status(500).json({
-                message: 'Error creating the Post within the post command.'
+                message: 'Error creating the Post within the post command.', err
             });
         })
     }
@@ -73,11 +90,11 @@ router.put('/:id', restricted, checked, (req, res) => {
         const ID = req.params.id
     
         //define req.body
-        const { username, password, type } = req.body;
-        const user = { username, password, type };
+        const { email, password, stylist } = req.body;
+        const user = { email, password, stylist};
     
         //check the req body
-        if(!username || !password ) { 
+        if(!email || !password ) { 
         return res.status(400).json({ error: 'Please provide the NEW user name or password' });
         }
         Users
@@ -87,12 +104,47 @@ router.put('/:id', restricted, checked, (req, res) => {
             return sendMissing(res);
         }
         else{
-            newUser = { ID, username, password, type }
-            return res.status(201).json(newUser);
+            newUser = { ID, username, password, stylist }
+            return res.status(201).json({message: 'Update was Successful', newUser});
         }
         })
         .catch( err => {
         return sendError( 'This function is currently unavailable', res );
+        })
+    }
+);
+
+//update post
+router.put('/:id/posts', restricted, checked, (req, res) => {
+    //define id
+    const ID = req.params.id
+
+    //define req.body
+    const { title, posts_image, description } = req.body;
+    const post = { title, posts_image, description};
+
+    //check the req.body
+    if(!title || !posts_image || !description) { 
+        return res.status(400).json({ error: "Please provide the post's title, image, or description to update." });
+        }
+    Users
+        .update(ID, post)
+        .then(post => {
+            if (post === undefined) {
+                return sendMissing(res);
+            }
+            else{
+                post = { ID, title, posts_image, description }
+                res.status(200).json({
+                message: 'Post Successfully Updated, congratulations!!!'
+            });
+        }
+        })
+        .catch(err => {
+            //console.log(err);
+            res.status(500).json({
+                message: 'Error updating the Post within the post command.', err
+            });
         })
     }
 );
@@ -109,7 +161,7 @@ router.delete('/:id', restricted, checked, (req, res) => {
             return sendMissing(res);
         }
         else{
-            return res.status(200).json(user);
+            return res.status(200).json({ message: 'User account removed successfully', user});
         }
         })
         .catch( err => {
@@ -117,6 +169,28 @@ router.delete('/:id', restricted, checked, (req, res) => {
         })
 
     }
+);
+
+//delete post
+router.delete('/:id/posts', restricted, checked, (req, res) => {
+    //set id
+    const ID = req.params.id
+    //delete the user
+    Users
+    .removePost(ID)
+    .then( post => { 
+    if (post === undefined) {
+        return sendMissing(res);
+    }
+    else{
+        return res.status(200).json({ message: 'User account removed successfully', post});
+    }
+    })
+    .catch( err => {
+    return sendError( 'This function is currently unavailable', res );
+    })
+
+}
 );
 
 module.exports = router;
