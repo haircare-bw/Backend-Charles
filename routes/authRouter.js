@@ -35,10 +35,12 @@ router.post('/login', (req, res) => {
         const token = genToken(user);
         // console.log('this is the token', token);
         const ID = user.id;
+        const type = user,stylist;
         res.status(200).json({
           message: `Welcome!`,
-          token,
-          ID // added token
+          token,// added token
+          ID,
+          type 
         });
       } else {
         res.status(401).json({ message: 'Invalid Credentials' });
