@@ -5,18 +5,18 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return knex('portfolio').insert([
-        {user_id: 1},
-        {user_id: 1},
-        {user_id: 1},
-        {user_id: 1},
-        {user_id: 2},
-        {user_id: 2},
-        {user_id: 2},
-        {user_id: 2},
-        {user_id: 3},
-        {user_id: 3},
-        {user_id: 3},
-        {user_id: 3},
+        {stylists_id: 1},
+        {stylists_id: 1},
+        {stylists_id: 1},
+        {stylists_id: 1},
+        {stylists_id: 2},
+        {stylists_id: 2},
+        {stylists_id: 2},
+        {stylists_id: 2},
+        {stylists_id: 3},
+        {stylists_id: 3},
+        {stylists_id: 3},
+        {stylists_id: 3},
       ]);
     });
 };
