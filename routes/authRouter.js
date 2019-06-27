@@ -52,7 +52,9 @@ router.post('/login', (req, res) => {
 function genToken(user) {
   const payload = {
     subject: user.id,
-    username: user.email
+    email: user.email,
+    stylist: user.stylist
+
   };
   const options ={
     expiresIn: '1d',
