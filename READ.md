@@ -2,7 +2,7 @@
 
 https://hair-care.herokuapp.com/
 
-## AUTH ROUTE
+# AUTH ROUTE
 
 ## **REGISTER - USER**
 
@@ -10,13 +10,14 @@ _Method Url:_ `/api/auth/register`
 
 _HTTP method:_ **[POST]**
 
-## The Registration Body
+#### The Registration Body
 
-| name           | type    | required | description    |
-| -------------- | ------- | -------- | -------------- |
-| `email`        | String  | Yes      | Must be unique |
-| `password`     | String  | Yes      |                |
-| `stylist`      | Boolean | No       |                |
+| name           | type    | required | description          |
+| -------------- | ------- | -------- | -------------------- |
+| `email`        | String  | Yes      | Must be unique       |
+| `password`     | String  | Yes      |                      |
+| `stylist`      | Boolean | No       | Pass in true for yes |
+|                |         |          | and false for no     |
 
 _example:_
 
@@ -24,7 +25,7 @@ _example:_
 {
     email: email@email.com,
     password: "password",
-    stylist: 1 for true, 0 for false
+    stylist: 
 }
 ```
 
@@ -75,7 +76,9 @@ _example:_
 ```
 {
     "message": "Welcome!",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijo4LCJ1c2VybmFtZSI6ImVtYUB5YWhvby5jb20iLCJpYXQiOjE1NjE2NjQ0MTcsImV4cCI6MTU2MTc1MDgxN30.kbWfime8IHY0PtQJhVpkqjCjlmjvSJpV7nfQMEhaLjo"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijo4LCJ1c2VybmFtZSI6ImVtYUB5YWhvby5jb20iLCJpYXQiOjE1NjE2NjQ0MTcsImV4cCI6MTU2MTc1MDgxN30.kbWfime8IHY0PtQJhVpkqjCjlmjvSJpV7nfQMEhaLjo",
+    "ID": 2,
+    "type": 1
 }
 ```
 
@@ -236,24 +239,6 @@ _HTTP method:_ **[GET]**
 
 ----
 
-## **POST A NEW POST**
-
-_Method Url:_ `/api/users/:id/posts`
-
-_HTTP method:_ **[POST]**
-
-#### Response
-
-##### 200 (OK)
-
-```
-{
-}
-```
-
-----
-
-
 ## **UPDATE USER**
 
 _Method Url:_ `/api/users/:id`
@@ -272,7 +257,7 @@ _HTTP method:_ **[PUT]**
 }
 ```
 
----
+----
 
 ## **DELETE USER**
 
@@ -292,5 +277,60 @@ _HTTP method:_ **[DELETE]**
 }
 ```
 
+----
 
+## **CREATE A NEW POST**
 
+_Method Url:_ `/api/users/posts`
+
+_HTTP method:_ **[POST]**
+
+#### Response
+
+##### 200 (OK)
+
+```
+{
+    "message": "Post created, congratulations!!!"
+}
+```
+
+----
+
+## **UPDATE POST**
+
+_Method Url:_ `/api/users/:id/posts`
+
+_HTTP method:_ **[PUT]**
+
+#### Response
+
+##### 200 (OK)
+
+```
+{
+    "message": "Post Successfully Updated, congratulations!!!"
+}
+```
+
+----
+
+## **DELETE POST**
+
+_Method Url:_ `/api/users/:id/posts`
+
+_Protected Route_ | User with the stylist role Only
+
+_HTTP method:_ **[DELETE]**
+
+#### Response
+
+##### 202 (Accepted)
+
+```
+{
+    "message": "User post removed successfully"
+}
+```
+
+----
