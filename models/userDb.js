@@ -9,6 +9,7 @@ module.exports = {
   findBy,
   getPostsById,
   getPortfolioById,
+  removePost,
 };
 
 function get() {
@@ -54,4 +55,10 @@ function remove(id) {
   return db('users')
     .where('id', id)
     .del();
+}
+
+function removePost(id){
+  return db('posts')
+  .where('id', id)
+  .del();
 }
