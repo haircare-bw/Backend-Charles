@@ -7,6 +7,8 @@ module.exports = {
   update,
   remove,
   findBy,
+  getPostsById,
+  getPortfolioById,
 };
 
 function get() {
@@ -20,11 +22,18 @@ function findBy(filter) {
 
 function getById(id) {
   return db('stylists')
-  .join('posts', 'stylists.id', 'posts.stylists_id')
-  .join('portfolio', 'stylists.id', 'portfolio.stylists_id' )
-  .select('stylists.id', 'stylists.username', 'stylists.about', 'stylists.skills', 'stylists.profile_img', 'posts.title', 'posts.posts_image', 'posts.description', 'portfolio.portfolio_image')
   .where('stylists.id', id)
+  .first()
+}
 
+function getPostsById(id) {
+  return db('posts')
+  .where('posts.stylists_id', id)
+}
+
+function getPortfolioById(id) {
+  return db('portfolio')
+  .where('portfolio.stylists_id', id)
 }
 
 function insert(user) {

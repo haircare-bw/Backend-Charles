@@ -30,37 +30,38 @@ router.get('/', restricted, (req, res) => {
 
 
 //get user by id 
-router.get('/:id', restricted, (req, res) => {
-        const ID = req.params.id;
-        Users
-        .getById(ID)
-        .then( stylist => {
-            if( stylist === undefined ) {
-                return sendMissingID(res);
-            }
-            else{
-                return res.status(200).json(stylist);
-            }
-        })
-        .catch( err => {
-            return sendErr( 'stylist information is unavailable at this time', res );
-        }) 
-    }
-);
+router.get('/:id', restricted, async (req, res) => {
+    try{
+            const ID = req.params.id;
+    
+            const stylist = await Users.getById(ID); 
+            // console.log('stylists', stylist);
+            stylist.portfolio = await Users.getPortfolioById(ID);
+            // console.log('portfolio', portfolio);
+            stylist.posts = await Users.getPostsById(ID);
+            // console.log('posts', posts);
+            
+            return res.status(200).json({stylist});
+            } 
+            catch(error){
+            res.status(500).json({message: 'stylist information is unavailable at this time'});
+        }
+});    
 
 //NEW USER using post
 router.post('/', restricted, checked, (req, res) => {
-    Users.insert(req.body)
+    Users
+        .insert(req.body)
         .then(user => {
             //console.log(user);
             res.status(200).json({
-                message: 'User created, congratz!!!'
+                message: 'Post created, congratz!!!'
             });
         })
         .catch(err => {
             //console.log(err);
             res.status(500).json({
-                message: 'Error creating the user within the post command.'
+                message: 'Error creating the Post within the post command.'
             });
         })
     }
