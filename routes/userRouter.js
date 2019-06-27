@@ -19,10 +19,20 @@ const sendMissing = (res) => {
 }
 
 //////////////////////////////////////////////////////////MAKE CRUD ENDPOINTS///////////////////////////////////
-//get requests all users
+//get requests all stylists
 router.get('/', restricted, (req, res) => {
     Users
         .get()
+        .then( user => {
+            res.json(user);
+        })
+        .catch( err => res.send(err));
+});
+
+//get requests all users
+router.get('/all', restricted, (req, res) => {
+    Users
+        .getAllUsers()
         .then( user => {
             res.json(user);
         })
@@ -50,33 +60,36 @@ router.get('/:id', restricted, async (req, res) => {
 });    
 
 //NEW Post using post
-router.post('/:id/posts', restricted, checked, (req, res) => {
+router.post('/posts', restricted, checked, (req, res) => {
     //define id
-    const ID = req.params.id
+    //  const ID = req.params.id
 
     //define req.body
-    const { title, posts_image, description } = req.body;
-    const post = { title, posts_image, description};
+    const { title, posts_image, description, stylists_id} = req.body;
+    
+    const post = { title, posts_image, description, stylists_id};
 
     //check the req.body
     if(!title && !posts_image ) { 
         return res.status(400).json({ error: 'Please provide the NEW posts title and image.' });
         }
     Users
-        .insert(ID, post)
+        .insert(post)
         .then(post => {
+            
             if (post === undefined) {
                 return sendMissing(res);
             }
             else{
-                post = { ID, title, posts_image, description }
+                console.log(post);
+                post = { stylists_id, title, posts_image, description }
                 res.status(200).json({
                 message: 'Post created, congratulations!!!'
             });
         }
         })
         .catch(err => {
-            //console.log(err);
+        console.log(err);
             res.status(500).json({
                 message: 'Error creating the Post within the post command.', err
             });

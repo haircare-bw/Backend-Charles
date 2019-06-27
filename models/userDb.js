@@ -2,6 +2,7 @@ const db = require('../data/dbConfig.js');
 
 module.exports = {
   get,
+  getAllUsers,
   getById,
   insert,
   update,
@@ -14,6 +15,11 @@ module.exports = {
 
 function get() {
   return db('stylists')
+}
+
+function getAllUsers(){
+  return db('users')
+  .select('email', 'stylist')
 }
 
 function findBy(filter) {
@@ -38,11 +44,11 @@ function getPortfolioById(id) {
 }
 
 function insert(user) {
-  return db('users')
+  return db('posts')
     .insert(user)
-    .then(ids => {
-      return getById(ids[0]);
-    });
+    // .then(ids => {
+    //   return getById(ids[0]);
+    // });
 }
 
 function update(id, changes) {

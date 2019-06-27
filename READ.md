@@ -83,7 +83,7 @@ _example:_
 
 # USERS ROUTES
 
-## **GET USERS**
+## **GET STYLIST USERS**
 
 _Method Url:_ `/api/users`
 
@@ -118,6 +118,55 @@ _HTTP method:_ **[GET]**
         "about": "I am an all around hair stylist great at every part of the process",
         "skills": "cut color styles nails",
         "profile_img": "https://source.unsplash.com/200x200/?hair"
+    }
+]
+```
+
+----
+
+## **GET ALL USERS**
+
+_Method Url:_ `/api/users/all`
+
+_HTTP method:_ **[GET]**
+
+#### Response
+
+##### 200 (OK)
+
+```
+[
+    {
+        "email": "kedasha@yahoo.com",
+        "stylist": 0
+    },
+    {
+        "email": "charles@yahoo.com",
+        "stylist": 1
+    },
+    {
+        "email": "ashley@yahoo.com",
+        "stylist": 1
+    },
+    {
+        "email": "jessica@yahoo.com",
+        "stylist": 1
+    },
+    {
+        "email": "charlie@yahoo.com",
+        "stylist": 0
+    },
+    {
+        "email": "miss@yahoo.com",
+        "stylist": null
+    },
+    {
+        "email": "email@yahoo.com",
+        "stylist": null
+    },
+    {
+        "email": "ema@yahoo.com",
+        "stylist": null
     }
 ]
 ```
@@ -187,6 +236,24 @@ _HTTP method:_ **[GET]**
 
 ----
 
+## **POST A NEW POST**
+
+_Method Url:_ `/api/users/:id/posts`
+
+_HTTP method:_ **[POST]**
+
+#### Response
+
+##### 200 (OK)
+
+```
+{
+}
+```
+
+----
+
+
 ## **UPDATE USER**
 
 _Method Url:_ `/api/users/:id`
@@ -224,3 +291,6 @@ _HTTP method:_ **[DELETE]**
     "message": "User account removed successfully"
 }
 ```
+
+
+
