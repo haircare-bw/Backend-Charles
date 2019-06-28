@@ -10,7 +10,7 @@ const checked = require('../middleware/checkRole.js')
 const router = express.Router();
 
 //make a constant reply for 404 & 500
-const sendErr = (msg, res) => {
+const sendError = (msg, res) => {
     res.status(500).json({ errorMessage: `${msg}` })
 };
 
@@ -20,23 +20,23 @@ const sendMissing = (res) => {
 
 //////////////////////////////////////////////////////////MAKE CRUD ENDPOINTS///////////////////////////////////
 //get requests all stylists
-router.get('/', restricted, (req, res) => {
-    Users
-        .get()
-        .then( user => {
-            res.json(user);
-        })
-        .catch( err => res.send(err));
+router.get('/', restricted, async (req, res) => {
+    try{
+        const users = await Users.get();
+        res.status(200).json({users});
+    }
+    catch( err ) {
+        return sendError('Something went wrong', res)  
+      };
 });
 
 //get requests all users
-router.get('/all', restricted, (req, res) => {
-    Users
-        .getAllUsers()
-        .then( user => {
-            res.json(user);
-        })
-        .catch( err => res.send(err));
+router.get('/all', restricted, async (req, res) => {
+    try{
+        const all = await Users.getAllUsers();
+        res.status(200).json({all});
+    }
+    catch( err ) { res.send(err) }
 });
 
 

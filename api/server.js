@@ -18,18 +18,17 @@ server.use(helmet());
 server.use(morgan('common'));
 // server.use(logger)
 
+//check to see if the server is running 
+server.get('/', (req, res) => {
+  res.status(200).json('You Complete Me!')
+})
 
 //load the routes that were imported
 server.use('/api/auth',auth);
 server.use('/api/users', userRouter);
 // server.use('/api/stylists', stylistRouter); 
 
-//check to see if the server is running 
-server.get('/', (req, res) => {
-  res.send(`
-    <h1> You Complete Me! </h1>
-  `)
-})
+
 
 // function logger(req, res, next) {
 //   console.log(`A ${req.method} request to '${req.url}' and this is when it happened '${Date.now()}`)
