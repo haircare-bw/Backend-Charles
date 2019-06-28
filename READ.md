@@ -12,12 +12,11 @@ _HTTP method:_ **[POST]**
 
 #### The Registration Body
 
-| name           | type    | required | description          |
-| -------------- | ------- | -------- | -------------------- |
-| `email`        | String  | Yes      | Must be unique       |
-| `password`     | String  | Yes      |                      |
-| `stylist`      | Boolean | No       | Pass in true for yes |
-|                |         |          | and false for no     |
+| name           | type    | required | description                               |
+| -------------- | ------- | -------- | ----------------------------------------- |
+| `email`        | String  | Yes      | Must be unique                            |
+| `password`     | String  | Yes      |                                           |
+| `stylist`      | Boolean | No       | Pass in true for yes and false for no     |
 
 _example:_
 
