@@ -56,7 +56,7 @@ function update(id, changes) {
 }
 
 function updatePost(id, changes) {
-  return db('post')
+  return db('posts')
     .where('id', id)
     .update(changes);
 }
