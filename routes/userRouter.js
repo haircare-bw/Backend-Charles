@@ -141,7 +141,7 @@ router.put('/:id/posts', restricted, checked, (req, res) => {
         return res.status(400).json({ error: "Please provide the post's title, image, or description to update." });
         }
     Users
-        .update(ID, post)
+        .updatePost(ID, post)
         .then(post => {
             if (post === undefined) {
                 return sendMissing(res);
