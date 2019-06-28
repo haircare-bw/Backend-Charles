@@ -6,6 +6,7 @@ module.exports = {
   getById,
   insert,
   update,
+  updatePost,
   remove,
   findBy,
   getPostsById,
@@ -50,6 +51,12 @@ function insert(user) {
 
 function update(id, changes) {
   return db('users')
+    .where('id', id)
+    .update(changes);
+}
+
+function updatePost(id, changes) {
+  return db('post')
     .where('id', id)
     .update(changes);
 }
